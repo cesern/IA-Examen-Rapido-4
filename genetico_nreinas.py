@@ -11,7 +11,7 @@ from itertools import combinations
 from random import shuffle
 import genetico
 
-__author__ = 'juliowaissman'
+__author__ = 'Cesar Salazar'
 
 
 class ProblemaNreinas(genetico.Problema):
@@ -55,16 +55,27 @@ def prueba_genetico(algo_genetico, n_generaciones, verbose=False):
     solucion = algo_genetico.busqueda(n_generaciones)
     t_final = time()
     if verbose:
-        print("\nUtilizando el AG: {}".format(algo_genetico.nombre))
-        print("Con poblacion de dimensión {}".format(
-            algo_genetico.n_poblacion))
-        print("Con {} generaciones".format(n_generaciones))
-        print("Costo de la solución encontrada: {}".format(
-            algo_genetico.problema.costo(solucion)))
-        print("Tiempo de ejecución en segundos: {}".format(
-            t_final - t_inicial))
+        print ('Pob:{0:3d} Gen:{1:3d} Prob:{3:5f} Costo:{2:5d}'.format(algo_genetico.n_poblacion,n_generaciones,
+                 algo_genetico.problema.costo(solucion),algo_genetico.prob_muta))
+        #print("\nUtilizando el AG: {}".format(algo_genetico.nombre))
+        #print("Con poblacion de dimensión {}".format(
+        #    algo_genetico.n_poblacion))
+        #print("Con {} generaciones".format(n_generaciones))
+        #print("Costo de la solución encontrada: {}".format(
+        #    algo_genetico.problema.costo(solucion)))
+        #print("Tiempo de ejecución en segundos: {}".format(
+        #    t_final - t_inicial))
     return solucion
 
+def automatizarProb():
+
+    n_poblacion=32
+    generaciones=50
+    for prob_mutacion in [0.5,0.1,0.05,.005,.0005,.0005,.000005]:
+        alg_gen = genetico.GeneticoPermutaciones(ProblemaNreinas(8),
+                                            n_poblacion, prob_mutacion)
+
+        solucion = prueba_genetico(alg_gen, generaciones, True)
 
 if __name__ == "__main__":
 
@@ -84,16 +95,14 @@ if __name__ == "__main__":
     #   -- ¿Cuales son en cada caso los mejores valores?  (escribelos
     #       abajo de esta linea)
     #
+    #               Población   Generaciones    Probabilidad
+    #    8  REINAS:        32             50             .5    
+    #   16  REINAS:
+    #   32  REINAS:
+    #   64  REINAS
+    #  100  REINAS    
     #
     #   -- ¿Que reglas podrías establecer para asignar valores segun
     #       tu experiencia?
     #
-
-    n_poblacion = 64
-    generaciones = 100
-    prob_mutacion = 0.05
-
-    alg_gen = genetico.GeneticoPermutaciones(ProblemaNreinas(16),
-                                             n_poblacion, prob_mutacion)
-
-    solucion = prueba_genetico(alg_gen, generaciones, True)
+    automatizarProb()
