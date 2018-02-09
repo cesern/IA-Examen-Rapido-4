@@ -55,8 +55,8 @@ def prueba_genetico(algo_genetico, n_generaciones, verbose=False):
     solucion = algo_genetico.busqueda(n_generaciones)
     t_final = time()
     if verbose:
-        print ('Pob:{0:3d} Gen:{1:3d} Prob:{3:5f} Costo:{2:5d}'.format(algo_genetico.n_poblacion,n_generaciones,
-                 algo_genetico.problema.costo(solucion),algo_genetico.prob_muta))
+        print ('Pob:{0:3d} Gen:{1:3d} Prob:{3:5f} Costo:{2:3d}  Tiempo:===>{4:5f}'.format(algo_genetico.n_poblacion,n_generaciones,
+                 algo_genetico.problema.costo(solucion),algo_genetico.prob_muta,t_final - t_inicial))
         #print("\nUtilizando el AG: {}".format(algo_genetico.nombre))
         #print("Con poblacion de dimensión {}".format(
         #    algo_genetico.n_poblacion))
@@ -67,15 +67,16 @@ def prueba_genetico(algo_genetico, n_generaciones, verbose=False):
         #    t_final - t_inicial))
     return solucion
 
-def automatizarProb():
+def probarVarios():
 
-    n_poblacion=32
-    generaciones=50
-    for prob_mutacion in [0.5,0.1,0.05,.005,.0005,.0005,.000005]:
-        alg_gen = genetico.GeneticoPermutaciones(ProblemaNreinas(8),
-                                            n_poblacion, prob_mutacion)
+    n_poblacion=128
+    generaciones=200
+    for _ in range(50):
+        #for prob_mutacion in [0.5,0.1,0.05,.005,.0005,.0005,.000005]:
+            alg_gen = genetico.GeneticoPermutaciones(ProblemaNreinas(16),
+                                                n_poblacion, 0.05)
 
-        solucion = prueba_genetico(alg_gen, generaciones, True)
+            solucion = prueba_genetico(alg_gen, generaciones, True)
 
 if __name__ == "__main__":
 
@@ -95,14 +96,16 @@ if __name__ == "__main__":
     #   -- ¿Cuales son en cada caso los mejores valores?  (escribelos
     #       abajo de esta linea)
     #
-    #               Población   Generaciones    Probabilidad
-    #    8  REINAS:        32             50             .5    
-    #   16  REINAS:
+    #               Población   Generaciones    Probabilidad    Tiempo
+    #    8  REINAS:        64             50             .5         .4
+    #   16  REINAS:       128            200            .05         .5
     #   32  REINAS:
     #   64  REINAS
     #  100  REINAS    
     #
     #   -- ¿Que reglas podrías establecer para asignar valores segun
     #       tu experiencia?
+    #   ¿¿¿¿¿Conforme van creciendo las reinas aumentar la poblacion? y generaciones?. La probabilidad
+    #   reducirla?????   
     #
-    automatizarProb()
+    probarVarios()
