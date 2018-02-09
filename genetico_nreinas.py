@@ -68,15 +68,18 @@ def prueba_genetico(algo_genetico, n_generaciones, verbose=False):
     return solucion
 
 def probarVarios():
-
-    n_poblacion=128
+    nreinas=100
+    n_poblacion=50
     generaciones=200
-    for _ in range(50):
-        #for prob_mutacion in [0.5,0.1,0.05,.005,.0005,.0005,.000005]:
-            alg_gen = genetico.GeneticoPermutaciones(ProblemaNreinas(16),
-                                                n_poblacion, 0.05)
+    #prob_mutacion=[.5,0.1,0.05,.005,.0005,.0005,.00005]
+    for i in range(50):
+        probar(nreinas,n_poblacion,generaciones,.001)
 
-            solucion = prueba_genetico(alg_gen, generaciones, True)
+def probar(nreinas,n_poblacion,generaciones,prob_mutacion):
+    alg_gen = genetico.GeneticoPermutaciones(ProblemaNreinas(nreinas),
+                                                n_poblacion, prob_mutacion)
+
+    solucion = prueba_genetico(alg_gen, generaciones, True)    
 
 if __name__ == "__main__":
 
@@ -108,4 +111,5 @@ if __name__ == "__main__":
     #   ¿¿¿¿¿Conforme van creciendo las reinas aumentar la poblacion? y generaciones?. La probabilidad
     #   reducirla?????   
     #
+    #(parametros,metodos,tiempo,tiempo del ajuste)
     probarVarios()
