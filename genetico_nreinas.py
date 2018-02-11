@@ -65,21 +65,36 @@ def prueba_genetico(algo_genetico, n_generaciones, verbose=False):
         #    algo_genetico.problema.costo(solucion)))
         #print("Tiempo de ejecución en segundos: {}".format(
         #    t_final - t_inicial))
-    return solucion
+    #para calcular los promedios regrese mas valores
+    return solucion, t_final - t_inicial, algo_genetico.problema.costo(solucion)
 
 def probarVarios():
-    nreinas=100
-    n_poblacion=50
-    generaciones=200
-    #prob_mutacion=[.5,0.1,0.05,.005,.0005,.0005,.00005]
-    for i in range(50):
-        probar(nreinas,n_poblacion,generaciones,.001)
-
+    tiempoPromedio=0                     
+    repeticiones=10
+    nreinas=16
+    prob_mutacion=[.05]
+    npob=100
+    gen=150
+    for prob in prob_mutacion:
+        tiempoPromedio=0
+        costo=0
+        for _ in range(repeticiones):
+            aux1,aux2=probar(nreinas,npob,gen,prob)
+            tiempoPromedio+=aux1
+            costo+=aux2
+        print("\nTiempo Promedio = ",tiempoPromedio/repeticiones)
+        print("\nCosto Promedio = ",costo/repeticiones)
+    
 def probar(nreinas,n_poblacion,generaciones,prob_mutacion):
+    """
+        Funcion que prueba el algoritmo
+        recibe lod parametros a variar 
+    """
     alg_gen = genetico.GeneticoPermutaciones(ProblemaNreinas(nreinas),
                                                 n_poblacion, prob_mutacion)
 
-    solucion = prueba_genetico(alg_gen, generaciones, True)    
+    solucion, tiempo, costo = prueba_genetico(alg_gen, generaciones, True)    
+    return tiempo, costo
 
 if __name__ == "__main__":
 
@@ -99,17 +114,23 @@ if __name__ == "__main__":
     #   -- ¿Cuales son en cada caso los mejores valores?  (escribelos
     #       abajo de esta linea)
     #
-    #               Población   Generaciones    Probabilidad    Tiempo
-    #    8  REINAS:        64             50             .5         .4
-    #   16  REINAS:       128            200            .05         .5
-    #   32  REINAS:
-    #   64  REINAS
-    #  100  REINAS    
+    #   Todos los problemas los corri 100 repeticiones y calculando promedios y viendo el max y min
+    #   Quizas los tiempos tan elevados se deban a mi computadora porque en el salon de clases los tiempos no eran tan elevados
+    #   y el de 100 reinas en mi laptop es demasiado el tiempo
+    #
+    #               Pob   Gen    Prob   TiempoPromedio CostoPromedio MenorCosto MayorCosto
+    #    8  REINAS:  50    50      .1           0.2420             0          0          0
+    #   16  REINAS: 100   150     .05           2.7952             0          0          0
+    #   32  REINAS: 145   300    .006          15.4775          0.02          0          1
+    #   64  REINAS: 170   400    .005          95.1227          0.02          0          1
+    #  100  REINAS: 150   500    .004         239.5438           0.4          0          2    
     #
     #   -- ¿Que reglas podrías establecer para asignar valores segun
     #       tu experiencia?
-    #   ¿¿¿¿¿Conforme van creciendo las reinas aumentar la poblacion? y generaciones?. La probabilidad
-    #   reducirla?????   
+    #   Conforme van creciendo las reinas aumentar la poblacion (solo un poco) y generaciones. La probabilidad
+    #   reducirla un poco. Al aumentar la poblacion y las generaciones el tiempo aumenta bastante  
     #
-    #(parametros,metodos,tiempo,tiempo del ajuste)
+    #    PAra el de 10 reinas : (Poblacion:150 generaciones:500 probabilidad:.004
+    #                           ,no modifique metodos,239.5438 ,no modifique metodos pero tarde demasiado corriendo el programa para 
+    #                           encontrar los valores)
     probarVarios()
